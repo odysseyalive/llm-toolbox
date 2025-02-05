@@ -172,3 +172,5 @@ cython_debug/
 
 # auxillary
 error.txt
+models/
+datasets/
