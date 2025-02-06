@@ -32,8 +32,11 @@ Before you begin, ensure you have the following:
    ```
 
 2. **Create a Virtual Environment:**  
-   Open your terminal and run:  
-   `python -m venv venv`
+   Open your terminal and run:
+
+   ```sh
+   python -m venv venv
+   ```
 
 3. **Activate the Virtual Environment:**
 
