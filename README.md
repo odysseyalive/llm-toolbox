@@ -70,8 +70,8 @@ python trainer.py [OPTIONS]
 
 **Key Options:**
 
-- `--model_name`: The Hugging Face model ID for DeepSeek R1 1.5B. Default is `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`.
-- `--dataset_name`: The Hugging Face dataset ID for OpenOrca. Default is `Open-Orca/OpenOrca`.
+- `--model_name`: The Hugging Face model ID. e.g. `deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B`.
+- `--dataset_name`: The Hugging Face dataset ID. e.g. `Open-Orca/OpenOrca`.
 - `--batch_size`: Per device training batch size. Default is `1`.
 - `--gradient_accumulation_steps`: Steps to accumulate gradients for an effective batch size. Default is `8`.
 - `--num_epochs`: Number of training epochs. Default is `3`.
