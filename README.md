@@ -58,16 +58,15 @@ To fine-tune a model, run the following command:
 - `--use-lora`: Enable LoRA fine-tuning (this requires the PEFT library).
 - `--use-cuda`: Use CUDA for training if available (default is CPU).
 
-**Train with simple dataset:**  
-`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --batch-size 8 --use-cuda --use-lora --dataset-text-field text --output-dir output/chat_model`
-
 **Train with instructional dataset:**  
-`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --batch-size 8 --use-cuda --use-lora --instruction-prompt --output-dir output/instruction_model`
+`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --use-cuda --use-lora --instruction-prompt --output-dir ./results --batch-size 4 --save-steps 10000 --save-total-limit 2 --logging-dir ./logs`
 
 ### Converting a Model Checkpoint
 
 To convert a safetensors checkpoint to GGUF format, run:  
 `python main.py convert --input-model path/to/model.safetensors --output-model path/to/model.gguf`
+
+python main.py convert --input-model path/to/model.safetensors --output-model path/to/model.gguf
 
 ## Considerations
 
