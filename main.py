@@ -12,7 +12,7 @@ def simple_tokenize(batch, text_field, tokenizer):
         raise ValueError(
             f"Dataset does not have the field '{text_field}'. Available fields: {list(batch.keys())}"
         )
-    return tokenizer(text, truncation=True)
+    return tokenizer(text, truncation=True, padding="max_length", max_length=512)
 
 
 def instruction_prompt_tokenize(batch, tokenizer):
@@ -29,9 +29,9 @@ def instruction_prompt_tokenize(batch, tokenizer):
         question = batch["question"][i] or ""
         response = batch["response"][i] or ""
         # If a system_prompt is available, include it.
-        system_prompt = ""
-        if "system_prompt" in batch:
-            system_prompt = batch["system_prompt"][i] or ""
+        system_prompt = (
+            batch.get("system_prompt", [""] * len(batch["question"]))[i] or ""
+        )
 
         if system_prompt.strip():
             prompt = f"{system_prompt.strip()}\nQuestion: {question.strip()}\nResponse: {response.strip()}"
@@ -39,7 +39,7 @@ def instruction_prompt_tokenize(batch, tokenizer):
             prompt = f"Question: {question.strip()}\nResponse: {response.strip()}"
         merged.append(prompt)
 
-    return tokenizer(merged, truncation=True)
+    return tokenizer(merged, truncation=True, padding="max_length", max_length=512)
 
 
 def train_model(args):
