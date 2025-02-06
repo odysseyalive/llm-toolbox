@@ -58,8 +58,11 @@ To fine-tune a model, run the following command:
 - `--use-lora`: Enable LoRA fine-tuning (this requires the PEFT library).
 - `--use-cuda`: Use CUDA for training if available (default is CPU).
 
-**Example Command:**  
-`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --use-cuda --use-lora`
+**Train with simple dataset:**  
+`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --batch-size 8 --use-cuda --use-lora --dataset-text-field text --output-dir output/chat_model`
+
+**Train with instructional dataset:**  
+`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --batch-size 8 --use-cuda --use-lora --instruction-prompt --output-dir output/instruction_model`
 
 ### Converting a Model Checkpoint
 
@@ -89,4 +92,3 @@ A: Include the `--use-cuda` flag in your command to enable CUDA support. If CUDA
 A: Yes, you can adjust parameters like `r`, `lora_alpha`, and `target_modules` in the script to better match your specific model requirements.
 
 We hope The LLM Toolbox serves as an effective resource in your AI endeavors. Happy fine-tuning and converting!
-
