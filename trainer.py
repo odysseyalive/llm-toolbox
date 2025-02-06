@@ -1,4 +1,4 @@
-# import os
+import os
 import argparse
 # import torch
 
@@ -80,16 +80,23 @@ def preprocess_function(examples, tokenizer, max_seq_length):
     This function assumes each example has fields 'system_prompt', 'question', and 'response'.
     """
     inputs = []
-    for system_prompt, question, response in zip(
-        examples.get("system_prompt", []),
-        examples.get("question", []),
-        examples.get("response", []),
-    ):
+    system_prompts = examples.get("system_prompt", [])
+    questions = examples.get("question", [])
+    responses = examples.get("response", [])
+
+    if not (system_prompts and questions and responses):
+        print(
+            "Warning: Some entries are missing expected fields 'system_prompt', 'question', or 'response'!"
+        )
+
+    for system_prompt, question, response in zip(system_prompts, questions, responses):
         # Format your prompt as desired (here, a simple concatenation)
         text = f"System Prompt: {system_prompt}\nQuestion: {question}\nResponse: {response}"
         inputs.append(text)
+
     if not inputs:
         print("No valid inputs found in the dataset.")
+
     tokenized = tokenizer(
         inputs, truncation=True, max_length=max_seq_length, padding="max_length"
     )
@@ -142,7 +149,7 @@ def main():
     dataset = load_dataset(args.dataset_name)
     train_dataset = dataset["train"]
 
-    # Print some samples from the dataset to debug
+    # Print some samples from the dataset to debug.
     print("Sample data from the dataset:")
     print(train_dataset[:5])
 
@@ -185,10 +192,11 @@ def main():
     trainer.train()
     print("Training complete.")
 
-    # Save the fine-tuned model.
+    # Save the fine-tuned model and tokenizer.
     print(f"Saving model to {args.output_dir}...")
     model.save_pretrained(args.output_dir)
-    print("Model saved.")
+    tokenizer.save_pretrained(args.output_dir)
+    print("Model and tokenizer saved.")
 
 
 if __name__ == "__main__":
