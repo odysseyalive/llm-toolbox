@@ -76,7 +76,7 @@ python trainer.py [OPTIONS]
 - `--gradient_accumulation_steps`: Steps to accumulate gradients for an effective batch size. Default is `8`.
 - `--num_epochs`: Number of training epochs. Default is `3`.
 - `--learning_rate`: Learning rate for training. Default is `2e-4`.
-- `--max_seq_length`: Maximum sequence length for tokenization. Default is `1024`.
+- `--max_seq_length`: Maximum sequence length for tokenization. Default is `2048`.
 - `--output_dir`: Directory to save the fine-tuned model. Default is `./lora_finetuned_deepseek`.
 - `--lora_r`: LoRA rank parameter. Default is `8`.
 - `--lora_alpha`: LoRA alpha scaling parameter. Default is `16`.
