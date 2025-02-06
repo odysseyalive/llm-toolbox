@@ -100,6 +100,7 @@ python trainer.py --model_name deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B --datas
 - **Hardware Compatibility:** Verify that your CUDA drivers and GPU support are appropriately configured. The toolbox defaults to CPU if CUDA is unavailable.
 - **Flexibility:** While the default settings target DeepSeek R1 1.5B and Open-Orca/OpenOrca, this toolbox can work with any model or dataset that complies with the Transformers architecture. Ensure your dataset meets the expected schema (typically a "text" field; adjust the `tokenize_function` if needed).
 - **LoRA Settings:** The PEFT library must be installed for LoRA functionality. Adjust the target modules (e.g., `q_proj`, `v_proj`) to suit your model.
+- obtaining models: Models are automatically downloaded by the script from [Hugging Face](https://huggingface.co/).
 
 ## FAQ
 
