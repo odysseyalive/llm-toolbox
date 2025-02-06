@@ -3,4 +3,5 @@ datasets>=2.14.0
 accelerate>=0.18.0
 peft>=0.3.0
 bitsandbytes>=0.40.1
+safetensors>=0.3.0
 torch>=1.12.0
