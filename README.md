@@ -59,7 +59,8 @@ To fine-tune a model, run the following command:
 - `--use-cuda`: Use CUDA for training if available (default is CPU).
 
 **Train with instructional dataset:**  
-`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --use-cuda --use-lora --instruction-prompt --output-dir ./results --batch-size 4 --save-steps 10000 --save-total-limit 2 --logging-dir ./logs`
+`python main.py train --model-id models/deepseek-r1-1.5b --dataset-id datasets/OpenOrca --num-train-epochs 5 --use-cuda --batch-size 2 --output-dir ./results --save-steps 10000 --save-total-limit 2 --logging-dir ./logs --dataset-text-field response
+`
 
 ### Converting a Model Checkpoint
 

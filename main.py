@@ -3,10 +3,13 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM, Trainer, TrainingArguments
 from safetensors.torch import save_file
 from peft import get_peft_model, LoraConfig, TaskType
+import torch
+from torch.cuda.amp import GradScaler
+
+scaler = GradScaler()
 
 
 def simple_tokenize(batch, text_field, tokenizer):
-    # Tokenizes a single field (chat-prompt mode)
     text = batch.get(text_field)
     if text is None:
         raise ValueError(
@@ -16,19 +19,15 @@ def simple_tokenize(batch, text_field, tokenizer):
 
 
 def instruction_prompt_tokenize(batch, tokenizer):
-    # Tokenizes using an instruction-like approach.
-    # Requires the "question" and "response" fields.
     if "question" not in batch or "response" not in batch:
         raise ValueError(
             "Missing required fields for instruction prompt tokenization: 'question' and/or 'response'"
         )
 
     merged = []
-    # Loop over each example in the batch.
     for i in range(len(batch["question"])):
         question = batch["question"][i] or ""
         response = batch["response"][i] or ""
-        # If a system_prompt is available, include it.
         system_prompt = (
             batch.get("system_prompt", [""] * len(batch["question"]))[i] or ""
         )
@@ -74,7 +73,6 @@ def train_model(args):
 
     print("Tokenization complete.")
 
-    # Load the model
     model = AutoModelForCausalLM.from_pretrained(args.model_id)
     model.to(device)
 
@@ -88,29 +86,27 @@ def train_model(args):
         )
         model = get_peft_model(model, lora_config)
 
-    # Define training arguments
     training_args = TrainingArguments(
         output_dir=args.output_dir,
         num_train_epochs=args.num_train_epochs,
         per_device_train_batch_size=args.batch_size,
+        gradient_accumulation_steps=2,
         save_steps=args.save_steps,
         save_total_limit=args.save_total_limit,
         logging_dir=args.logging_dir,
+        fp16=True,
     )
 
-    # Initialize Trainer
     trainer = Trainer(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
     )
 
-    # Start training
     print("Starting the training process...")
     trainer.train()
     print("Training complete.")
 
-    # Save the trained model to a safetensors file
     print("Saving the trained model...")
     model_path = "trained_model.safetensors"
     save_file(model.state_dict(), model_path)
@@ -141,24 +137,17 @@ def main():
         action="store_true",
         help="Flag to indicate usage of LoRA for fine-tuning",
     )
-
-    # For chat mode (simple prompt), default to using a single text field.
     parser.add_argument(
         "--dataset-text-field",
         type=str,
         default="text",
         help="Dataset column name for simple tokenization (default: 'text')",
     )
-
-    # For instruction mode: use --instruction-prompt to enable instruction-like tokenization.
-    # This mode assumes the dataset contains "question" and "response" fields and optionally a "system_prompt".
     parser.add_argument(
         "--instruction-prompt",
         action="store_true",
         help="Enable instruction-like tokenization using the 'question' and 'response' fields",
     )
-
-    # Additional training arguments
     parser.add_argument(
         "--output-dir",
         type=str,
@@ -166,7 +155,7 @@ def main():
         help="Directory to save the model and results",
     )
     parser.add_argument(
-        "--batch-size", type=int, default=4, help="Batch size for training"
+        "--batch-size", type=int, default=2, help="Batch size for training"
     )
     parser.add_argument(
         "--save-steps",
