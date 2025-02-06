@@ -1,6 +1,6 @@
 # The LLM Toolbox
 
-Welcome to The LLM Toolbox – a practical resource designed to support your work with large language models. This project provides tools for fine-tuning models using the OpenOrca dataset turning any model into an instruction model.
+Welcome to The LLM Toolbox – a practical resource designed to support your work with large language models. This project provides tools for fine-tuning models using the OpenOrca dataset, turning any model into an instruction model.
 
 I wanted something I could run locally without having to mess around with a clunky interface. This toolbox is designed to be simple to use and easy to understand. It's a great starting point for anyone looking to train a large language model with an instruction dataset like OpenOrca. Pending performance optimizations, maybe additional datasets will be supported in the future.
 
