@@ -9,7 +9,6 @@ I wanted something I could run locally without having to mess around with a clun
 The LLM Toolbox offers two main features:
 
 - **Fine-Tuning Models:** Customize any language model compatible with Hugging Face's Transformers library. While our default setting targets DeepSeek R1 1.5B, you can adjust it to use other compatible models.
-- **Converting Checkpoints:** Easily convert a safetensors checkpoint to the GGUF format using an external conversion utility (coming soon).
 
 The project supports both CPU and CUDA (GPU acceleration) by default.
 
